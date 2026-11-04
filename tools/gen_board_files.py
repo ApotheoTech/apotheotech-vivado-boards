@@ -411,7 +411,13 @@ def write_board_image(img, root, board_dir):
     im = Image.open(src)
     if im.mode in ('RGBA', 'LA', 'P'):
         im = im.convert('RGBA')
-        bg = Image.new('RGB', im.size, tuple(img.get('background', (0, 0, 0))))
+        pad = img.get('trim_padding')
+        box = im.split()[-1].getbbox()
+        if pad is not None and box:
+            l, t_, r, b_ = box
+            px, py = round((r - l) * pad), round((b_ - t_) * pad)
+            im = im.crop((max(0, l - px), max(0, t_ - py), min(im.width, r + px), min(im.height, b_ + py)))
+        bg = Image.new('RGB', im.size, tuple(img.get('background', (255, 255, 255))))
         bg.paste(im, mask=im.split()[-1])
         im = bg
     else:

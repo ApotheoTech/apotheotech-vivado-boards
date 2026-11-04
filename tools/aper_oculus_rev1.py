@@ -25,7 +25,7 @@ BOARD = {
                       '2x 4-lane MIPI CSI-2, mini DisplayPort, USB 3.0, SATA, microSD, '
                       'IMU + barometer, quad USB-UART/JTAG.'),
     # Board picture shown in Vivado's board selection page. 'source' is relative
-    # to the repo root (any format Pillow reads, alpha is flattened onto
+    # to the repo root (any format Pillow reads; transparency is flattened onto
     # 'background'); the generator writes it into every board directory as an
     # RGB JPEG named 'name', resized to at most 'max_width' pixels wide.
     # Set to None to build without an image.
@@ -35,7 +35,10 @@ BOARD = {
         'display':     'Aper-Oculus',
         'description': 'Aper-Oculus Kria K26 carrier',
         'max_width':   1280,
-        'background':  (0, 0, 0),
+        'background':  (255, 255, 255),
+        # Crop to the opaque part of the render plus this much padding (fraction
+        # of the cropped size). None keeps the full canvas.
+        'trim_padding': 0.04,
     },
 }
 
