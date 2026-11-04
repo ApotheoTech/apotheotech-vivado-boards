@@ -6,6 +6,9 @@
           "name": "aper_oculus_k26c",
           "display": "Aper-Oculus + K26C SOM",
           "revision": "1.0",
+          "images": [
+                "aper-oculus_still.png"
+          ],
           "description": "Aper-Oculus Kria carrier (APT-KRIA-FMC Rev 1.00) with K26C SOM",
           "company": "apotheotech.com",
           "company_display": "ApotheoTech",

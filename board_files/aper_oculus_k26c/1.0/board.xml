@@ -10,6 +10,9 @@
     <revision id="0">1.00</revision>
   </compatible_board_revisions>
   <file_version>1.0</file_version>
+  <images>
+    <image name="aper-oculus_still.png"/>
+  </images>
   <description>ApotheoTech Aper-Oculus Kria carrier (APT-KRIA-FMC Rev 1.00): FMC (LA00-33, 4 TX / 2 RX GTH), FRAMOS SLVS-EC (2 lanes), 2x 4-lane MIPI CSI-2, mini DisplayPort, USB 3.0, SATA, microSD, IMU + barometer, quad USB-UART/JTAG. SOM: Kria K26C (xck26-sfvc784-2LV-c).</description>
   <components>
     <component name="part0" display_name="Kria K26C SOM on Aper-Oculus" type="fpga" part_name="xck26-sfvc784-2LV-c" pin_map_file="part0_pins.xml" vendor="xilinx" spec_url="https://www.amd.com/en/products/system-on-modules/kria/k26.html">
