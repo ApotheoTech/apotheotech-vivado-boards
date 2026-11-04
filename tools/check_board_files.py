@@ -90,6 +90,15 @@ def check_generated(c, board_dir):
         elif abs(need - have) > 0.01:
             err(f'{board_dir}: {n} is {std} ({need} V) in bank {bank} at {have} V')
 
+    for im in bxml.iter('image'):
+        f = os.path.join(board_dir, im.get('name', ''))
+        if not os.path.isfile(f):
+            err(f'{board_dir}: board image {im.get("name")} declared but missing')
+        elif open(f, 'rb').read(3) != b'\xff\xd8\xff':
+            warn(f'{board_dir}: board image {im.get("name")} is not a JPEG (AMD and Digilent ship JPEG)')
+        if im.get('sub_type') != 'board':
+            err(f'{board_dir}: board image {im.get("name")} needs sub_type="board"')
+
     comps = {cp.get('name'): cp for cp in bxml.iter('component')}
     part0 = comps['part0']
     if part0.get('part_name') not in {s['part'] for s in c.SOMS}:

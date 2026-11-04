@@ -24,6 +24,19 @@ BOARD = {
                       'FMC (LA00-33, 4 TX / 2 RX GTH), FRAMOS SLVS-EC (2 lanes), '
                       '2x 4-lane MIPI CSI-2, mini DisplayPort, USB 3.0, SATA, microSD, '
                       'IMU + barometer, quad USB-UART/JTAG.'),
+    # Board picture shown in Vivado's board selection page. 'source' is relative
+    # to the repo root (any format Pillow reads, alpha is flattened onto
+    # 'background'); the generator writes it into every board directory as an
+    # RGB JPEG named 'name', resized to at most 'max_width' pixels wide.
+    # Set to None to build without an image.
+    'image': {
+        'source':      'images/aper-oculus_still.png',
+        'name':        'aper_oculus_board.jpg',
+        'display':     'Aper-Oculus',
+        'description': 'Aper-Oculus Kria K26 carrier',
+        'max_width':   1280,
+        'background':  (0, 0, 0),
+    },
 }
 
 # One board directory is generated per SOM. Same carrier, different part.

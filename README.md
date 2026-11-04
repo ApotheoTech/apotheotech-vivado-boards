@@ -97,6 +97,7 @@ python3 tools/check_board_files.py \
 
 - `tools/aper_oculus_rev1.py` holds the carrier: signal table, interfaces, FMC map, carrier PS settings, notes.
 - `tools/k26_som_ps_preset.py` holds AMD's K26 SOM PS settings (DDR4 and the rest), copied verbatim.
+- `images/` holds the source board picture. `BOARD['image']` in the carrier module points at it; the generator converts it to an RGB JPEG (Vivado's board files all ship JPEG), resizes it to 1280 px wide, and copies it into every board directory. Needs Pillow (`pip install pillow`).
 - For a new carrier or FMC card, copy the carrier module, give it a new `base_name`, edit the tables, then run `gen_board_files.py --carrier <module>` and `check_board_files.py --carrier <module> --netlist <its netlist>`.
 - The checker verifies every row against the netlist and the SOM XDC and lists any wired PL/GTH pins that are missing from the table.
 - Bump `file_version` in the carrier module when you release a change, so Vivado treats it as a new board revision.

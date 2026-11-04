@@ -194,8 +194,17 @@ def emit_board_xml(c, som, comp_range, fmc_plan):
     L = ['<?xml version="1.0" encoding="UTF-8" standalone="no"?>',
          LICENSE_HEADER.format(year=YEAR, carrier=c.__name__),
          f'<board schema_version="2.2" vendor="{B["vendor"]}" name="{name}" display_name="{esc(disp)}" '
-         f'url="{B["url"]}" preset_file="preset.xml">',
-         '  <compatible_board_revisions>',
+         f'url="{B["url"]}" preset_file="preset.xml">']
+    img = B.get('image')
+    if img:
+        # Same element, attributes and position as AMD's (k26c, zcu106) and Digilent's
+        # board files. sub_type="board" is what makes Vivado show it as the board picture.
+        L += ['  <images>',
+              f'    <image name="{img["name"]}" display_name="{esc(img["display"])} + {som["som"]} SOM" sub_type="board">',
+              f'      <description>{esc(img["description"])} with Kria {som["som"]} SOM</description>',
+              '    </image>',
+              '  </images>']
+    L += ['  <compatible_board_revisions>',
          f'    <revision id="0">{B["pcb_rev"]}</revision>',
          '  </compatible_board_revisions>',
          f'  <file_version>{B["file_version"]}</file_version>',
@@ -383,10 +392,36 @@ def emit_xitem(c, som):
         'author': B['vendor_display'],
         'contributors': [{'group': B['vendor_display'], 'url': B['url']}],
         'category': 'Evaluation Boards',
+        'logo': B['image']['name'] if B.get('image') else '',
         'website': B['url'],
         'search-keywords': ['Kria', 'K26', som['som'], 'SOM', B['display_name'], B['pcb'], 'FMC', 'SLVS-EC', 'MIPI'],
     }}]}, '_major': 1, '_minor': 0}
     return json.dumps(item, indent=2) + '\n'
+
+
+def write_board_image(img, root, board_dir):
+    src = os.path.join(root, img['source'])
+    dst = os.path.join(board_dir, img['name'])
+    if not os.path.isfile(src):
+        sys.exit(f'board image {src} not found (set BOARD["image"] = None to build without one)')
+    try:
+        from PIL import Image
+    except ImportError:
+        sys.exit('Pillow is needed to convert the board image: pip install pillow')
+    im = Image.open(src)
+    if im.mode in ('RGBA', 'LA', 'P'):
+        im = im.convert('RGBA')
+        bg = Image.new('RGB', im.size, tuple(img.get('background', (0, 0, 0))))
+        bg.paste(im, mask=im.split()[-1])
+        im = bg
+    else:
+        im = im.convert('RGB')
+    mw = img.get('max_width')
+    if mw and im.width > mw:
+        im = im.resize((mw, round(im.height * mw / im.width)), Image.LANCZOS)
+    # Fixed settings and no metadata so the output is byte-for-byte repeatable.
+    im.save(dst, 'JPEG', quality=90, optimize=True)
+    return dst
 
 
 def emit_changelog(c):
@@ -558,6 +593,8 @@ def main():
             with open(p, 'w', newline='\n') as fh:
                 fh.write(text)
             written.append(p)
+        if B.get('image'):
+            written.append(write_board_image(B['image'], args.out, d))
     xdc_dir = os.path.join(args.out, 'xdc')
     os.makedirs(xdc_dir, exist_ok=True)
     p = os.path.join(xdc_dir, f'{B["display_name"]}-Master.xdc')
