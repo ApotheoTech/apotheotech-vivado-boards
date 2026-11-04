@@ -1,0 +1,5 @@
+######### Aper-Oculus board files changelog #########
+1.0 (PCB APT-KRIA-FMC Rev 1.00)
+  Initial release: PS preset (K26 SOM DDR4/QSPI/eMMC + carrier UART1, I2C0, SD1, USB0/USB3,
+  DisplayPort, SATA), 200 MHz clock, Si570 GTH refclk, 2x MIPI CSI-2 (2/4 lane), camera control,
+  SLVS-EC sensor I2C/control, IMU SPI, barometer SPI, board control/status GPIO, FMC J1 connector.

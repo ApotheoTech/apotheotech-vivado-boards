@@ -1,0 +1,13 @@
+ApotheoTech Vivado Board Files
+Copyright (C) 2026 ApotheoTech LLC
+
+This product includes Kria K26 SOM processing-system configuration values
+(tools/k26_som_ps_preset.py, and the first block of every generated
+preset.xml) taken from AMD's Kria K26C SOM board file
+(XilinxBoardStore, boards/Xilinx/k26c/1.4/preset.xml):
+
+  Copyright (C) 2023, Advanced Micro Devices, Inc - All rights reserved
+  Licensed under the Apache License, Version 2.0.
+
+The repository layout follows the convention used by Digilent's
+vivado-boards repository. No Digilent files are included.

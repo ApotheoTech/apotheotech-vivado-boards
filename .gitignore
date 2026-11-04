@@ -1,0 +1,5 @@
+smoke_aper_oculus_*/
+.Xil/
+*.jou
+*.log
+__pycache__/
